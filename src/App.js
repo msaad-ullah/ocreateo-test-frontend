@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import AddTaskForm from "./components/AddTaskForm";
+import TasksList from "./components/TasksList";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTasks } from "./redux/slices/taskSlice";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
-function App() {
+export default function App() {
+  const dispatch = useDispatch();
+  const { tasks } = useSelector((state) => state.tasks);
+  useEffect(() => {
+    dispatch(getAllTasks());
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: '10px' }}>
+      <AddTaskForm />
+      <TasksList tasks={tasks} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
-  );
+  )
 }
-
-export default App;
